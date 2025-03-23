@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Geography Quiz</title>
+    <style>
+        /* ... (Your CSS remains the same) ... */
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+        }
+
+        .quiz-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .option {
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 80%;
+            max-width: 300px;
+            background-color: #e0f2fe;
+        }
+
+        .option:hover {
+            background-color: #b3e5fc;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #next-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #restart-button{
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Ultimate Geography Quiz</h1>
+        <div id="question"></div>
+        <div class="options" id="options"></div>
+        <div id="result"></div>
+        <button id="next-button">Next Question</button>
+        <button id="restart-button">Restart Quiz</button>
+    </div>
+<script>
+    const questions = [
+        {
+            question: "What is the Köppen-Geiger climate classification of Ushuaia, Argentina?",
+            options: ["Cfb", "Cfc", "Dfc", "Dsc"],
+            answer: "Cfc"
+        },
+        {
+            question: "Which orogenic event formed the Appalachian Mountains?",
+            options: ["Alpine Orogeny", "Hercynian Orogeny", "Caledonian Orogeny", "Acadian Orogeny"],
+            answer: "Acadian Orogeny"
+        },
+        {
+            question: "The 'roaring forties' and 'furious fifties' refer to which wind patterns?",
+            options: ["Trade Winds", "Westerlies", "Polar Easterlies", "Doldrums"],
+            answer: "Westerlies"
+        },
+        {
+            question: "What is the primary lithology of the Guiana Shield?",
+            options: ["Limestone", "Basalt", "Granite", "Sandstone"],
+            answer: "Granite"
+        },
+        {
+            question: "Which biogeographical realm is characterized by marsupial megafauna?",
+            options: ["Neotropical", "Palearctic", "Australasian", "Afrotropical"],
+            answer: "Australasian"
+        },
+        {
+            question: "What is the approximate halocline depth in the Baltic Sea?",
+            options: ["10-20 meters", "40-70 meters", "100-150 meters", "200-250 meters"],
+            answer: "40-70 meters"
+        },
+        {
+            question: "The concept of 'choke points' in geopolitics is most relevant to which geographical feature?",
+            options: ["River deltas", "Mountain passes", "Straits", "Continental shelves"],
+            answer: "Straits"
+        },
+        {
+            question: "What is the primary process responsible for the formation of fjords?",
+            options: ["Aeolian erosion", "Chemical weathering", "Glacial scouring", "Tectonic uplift"],
+            answer: "Glacial scouring"
+        },
+        {
+            question: "Which soil order is characterized by permafrost?",
+            options: ["Oxisols", "Aridisols", "Gelisols", "Histosols"],
+            answer: "Gelisols"
+        },
+        {
+            question: "What is the primary driver of the thermohaline circulation?",
+            options: ["Wind patterns", "Tidal forces", "Density differences", "Solar radiation"],
+            answer: "Density differences"
+        },
+        {
+            question: "What is the primary cause of the 'Baltic Sea Anomaly'?",
+            options: ["Submarine volcanic activity", "Glacial erratic", "Military experiment debris", "Unknown"],
+            answer: "Unknown"
+        },
+        {
+            question: "Which geological formation is associated with the 'Giant's Causeway' in Northern Ireland?",
+            options: ["Karst topography", "Columnar basalt", "Moraine deposits", "Fold mountains"],
+            answer: "Columnar basalt"
+        },
+        {
+            question: "What is the primary mechanism responsible for the formation of 'fairy circles' in the Namib Desert?",
+            options: ["Termite activity", "Allelochemical interactions", "Wind erosion", "Meteorite impact"],
+            answer: "Allelochemical interactions"
+        },
+        {
+            question: "Which specific ocean current is responsible for the 'Great Pacific Garbage Patch' accumulation?",
+            options: ["Agulhas Current", "Humboldt Current", "North Pacific Gyre", "Canary Current"],
+            answer: "North Pacific Gyre"
+        },
+        {
+            question: "What is the dominant factor in the formation of the 'Salar de Uyuni' salt flat?",
+            options: ["Volcanic ash deposition", "Ancient lake evaporation", "Tidal inundation", "Glacial retreat"],
+            answer: "Ancient lake evaporation"
+        },
+        {
+            question: "Which geomorphic process is the primary cause of the 'Badlands' topography in South Dakota?",
+            options: ["Karstification", "Gully erosion", "Loess deposition", "Peneplanation"],
+            answer: "Gully erosion"
+        },
+        {
+            question: "What is the primary source of the 'Blood Falls' in Antarctica's Taylor Valley?",
+            options: ["Iron oxide-rich brine", "Algal blooms", "Volcanic sulfur deposits", "Red snow algae"],
+            answer: "Iron oxide-rich brine"
+        },
+        {
+            question: "Which tectonic plate boundary is associated with the formation of the 'Mariana Trench'?",
+            options: ["Divergent boundary", "Transform boundary", "Convergent subduction zone", "Hotspot volcanism"],
+            answer: "Convergent subduction zone"
+        },
+        {
+            question: "What is the primary factor contributing to the 'Rainbow Mountains' of Peru's coloration?",
+            options: ["Volcanic mineral deposition", "Algal biofilms", "Sedimentary mineral layers", "Eolian sediment transport"],
+            answer: "Sedimentary mineral layers"
+        },
+        {
+            question: "What is the primary reason for the 'Racetrack Playa' moving rocks in Death Valley?",
+            options: ["Seismic activity", "Animal migration", "Ice sheet movement", "Wind and thin ice"],
+            answer: "Wind and thin ice"
+        },
+        {
+            question: "Which paleolake is believed to have contributed to the formation of the 'White Sands' in New Mexico?",
+            options: ["Lake Bonneville", "Lake Agassiz", "Lake Lahontan", "Lake Otero"],
+            answer: "Lake Otero"
+        },
+        {
+            question: "What is the primary mechanism behind the formation of 'ice circles' on slow-moving rivers?",
+            options: ["Differential ice melt", "Tidal forces", "Wind shear", "Rotational currents"],
+            answer: "Rotational currents"
+        },
+        {
+            question: "Which specific type of cloud formation is associated with 'gravity waves' in the atmosphere?",
+            options: ["Lenticular clouds", "Cirrus clouds", "Cumulonimbus clouds", "Stratus clouds"],
+            answer: "Lenticular clouds"
+        },
+        {
+            question: "What is the primary geological process responsible for the 'Devil's Tower' in Wyoming?",
+            options: ["Laccolith intrusion", "Volcanic plug extrusion", "Fault-block uplift", "Mushroom rock formation"],
+            answer: "Laccolith intrusion"
+        },
+        {
+            question: "Which specific oceanographic phenomenon is linked to the 'Bermuda Triangle' disappearances?",
+            options: ["Rogue waves", "Methane hydrates", "Magnetic anomalies", "None of the above"],
+            answer: "None of the above"
+        },
+        {
+            question: "What is the primary cause of the 'Great Dying' (Permian-Triassic extinction event) based on current geological evidence?",
+            options: ["Asteroid impact", "Massive volcanic eruptions", "Sea level rise", "Climate change due to solar flares"],
+            answer: "Massive volcanic eruptions"
+        },
+        {
+            question: "Which specific type of soil is characterized by its high shrink-swell capacity and is often associated with foundation problems?",
+            options: ["Andisols", "Vertisols", "Histosols", "Spodosols"],
+            answer: "Vertisols"
+        },
+        {
+            question: "What is the primary mechanism behind the formation of 'medicanes' in the Mediterranean Sea?",
+            options: ["Tectonic shifts", "Evaporation-driven convection", "Polar jet stream interactions", "Submarine volcanic activity"],
+            answer: "Evaporation-driven convection"
+        },
+        {
+            question: "Which specific type of fault is responsible for the formation of the 'Dead Sea Transform'?",
+            options: ["Normal fault", "Reverse fault", "Strike-slip fault", "Thrust fault"],
+            answer: "Strike-slip fault"
+        },
+        {
+            question: "What is the primary factor contributing to the unique 'blue holes' found in the Caribbean?",
+            options: ["Glacial meltwater inflow", "Submarine spring discharge", "Tidal erosion", "Meteorite impact craters"],
+            answer: "Submarine spring discharge"
+        },
+        {
+            question: "Which specific type of soil is characterized by its high cation exchange capacity and is often found in volcanic regions?",
+            options: ["Oxisols", "Andisols", "Spodosols", "Aridisols"],
+            answer: "Andisols"
+        },
+        {
+            question: "What is the primary driver of the 'Rossby waves' in the upper atmosphere?",
+            options: ["Solar flares", "Tidal forces", "Earth's rotation and temperature gradients", "Magnetic field fluctuations"],
+            answer: "Earth's rotation and temperature gradients"
+        },
+        {
+            question: "Which specific type of karst topography is characterized by conical hills and is often found in tropical regions?",
+            options: ["Polje", "Uvala", "Cockpit karst", "Lapiaz"],
+            answer: "Cockpit karst"
+        },
+        {
+            question: "What is the primary mechanism behind the formation of 'cryoconite holes' on glaciers?",
+            options: ["Chemical weathering", "Wind erosion", "Solar radiation absorption by dark particles", "Tectonic fractures"],
+            answer: "Solar radiation absorption by dark particles"
+        },
+        {
+            question: "Which specific type of tectonic plate boundary is associated with the formation of 'back-arc basins'?",
+            options: ["Divergent boundary", "Transform boundary", "Convergent subduction zone", "Hotspot volcanism"],
+            answer: "Convergent subduction zone"
+        },
+        {
+            question: "What is the primary factor contributing to the 'albedo effect' in polar regions?",
+            options: ["Atmospheric pressure", "Ocean currents", "Ice and snow reflectivity", "Geothermal heat flux"],
+            answer: "Ice and snow reflectivity"
+        },
+        {
+            question: "Which specific type of delta formation is characterized by its bird's-foot shape and is often found in river mouths with low tidal ranges?",
+            options: ["Arcuate delta", "Cuspate delta", "Estuarine delta", "Lobe delta"],
+            answer: "Lobe delta"
+        },
+        {
+            question: "What is the main component of 'loess' deposits, that are commonly found in areas downwind from glacial regions and deserts?",
+            options: ["Organic matter", "Clay minerals", "Silt-sized particles", "Volcanic ash"],
+            answer: "Silt-sized particles"
+        },
+        {
+            question: "What is the primary mechanism behind the formation of 'pingoes' in periglacial environments?",
+            options: ["Frost heave", "Solifluction", "Nivation", "Chemical weathering"],
+            answer: "Frost heave"
+        },
+        {
+            question: "Which specific atmospheric circulation cell is responsible for the formation of subtropical deserts?",
+            options: ["Hadley cell", "Ferrel cell", "Polar cell", "Walker circulation"],
+            answer: "Hadley cell"
+        },
+        {
+            question: "What is the primary driver of 'Milankovitch cycles' and their impact on Earth's climate?",
+            options: ["Solar activity", "Plate tectonics", "Earth's orbital variations", "Oceanic currents"],
+            answer: "Earth's orbital variations"
+        },
+        {
+             question: "What is the largest out of Vatican City, the country of Monaco, Monte Carlo or Heathrow Airport?",
+            options: ["Vatican city", "Monaco", "Monte Carlo", "Heathrow Airport"],
+            answer: "Heathrow Airport"
+        }
+    ];
+    let currentQuestion = 0;
+    let score = 0;
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const resultElement = document.getElementById("result");
+        const nextButton = document.getElementById("next-button");
+        const restartButton = document.getElementById("restart-button");
+
+        function loadQuestion() {
+            const questionData = questions[currentQuestion];
+            questionElement.textContent = questionData.question;
+            optionsElement.innerHTML = "";
+
+            questionData.options.forEach(option => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("option");
+                optionElement.textContent = option;
+                optionElement.addEventListener("click", () => checkAnswer(option));
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const questionData = questions[currentQuestion];
+            if (selectedOption === questionData.answer) {
+                score++;
+            }
+            showNextButton();
+        }
+
+        function showNextButton() {
+            nextButton.style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+                nextButton.style.display = "none";
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionElement.style.display = "none";
+            optionsElement.style.display = "none";
+            nextButton.style.display = "none";
+            resultElement.textContent = `You scored ${score} out of ${questions.length}!`;
+            resultElement.style.display = "block";
+            restartButton.style.display = "block";
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            questionElement.style.display = "block";
+            optionsElement.style.display = "block";
+            resultElement.style.display = "none";
+            restartButton.style.display = "none";
+            loadQuestion();
+        }
+
+        nextButton.addEventListener("click", nextQuestion);
+        restartButton.addEventListener("click", restartQuiz);
+
+        loadQuestion();
+    </script>
+</body>
+</html>
