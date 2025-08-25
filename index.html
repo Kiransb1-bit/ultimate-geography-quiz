@@ -1,85 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Geography Quiz</title>
     <style>
         /* ... (Your CSS remains the same) ... */
+
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
             text-align: center;
-            background-color: #f0f8ff;
+            background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+            min-height: 100vh;
+            margin: 0;
         }
 
+        .globes-circle {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 480px;
+            height: 480px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
         .quiz-container {
-            width: 80%;
+            width: 90%;
             max-width: 600px;
             margin: 50px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 20%, #47cf73 40%, #2bc0e4 60%, #845ec2 80%, #ff5f6d 100%);
+            padding: 30px 20px 30px 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 8px rgba(0,0,0,0.45), 0 8px 24px rgba(0, 0, 0, 0.15);
+            border: 3px solid #fff176;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .quiz-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, rgba(0,0,0,0.25) 60%, rgba(120,0,255,0.18) 100%);
+            mix-blend-mode: hue;
+            z-index: 0;
+        }
+        .quiz-container > * {
+            position: relative;
+            z-index: 1;
         }
 
         .question {
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            font-size: 1.4em;
+            margin-bottom: 24px;
+            color: #ff4e50;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #fff176, 2px 2px 0 #fff;
         }
 
         .options {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 10px;
         }
 
         .option {
-            padding: 10px 20px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 14px 24px;
+            margin: 0;
+            border: 2px solid #fff176;
+            border-radius: 10px;
             cursor: pointer;
-            width: 80%;
-            max-width: 300px;
-            background-color: #e0f2fe;
+            width: 90%;
+            max-width: 340px;
+            background: linear-gradient(90deg, #a8ff78 0%, #78ffd6 100%);
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(168, 255, 120, 0.15);
         }
 
         .option:hover {
-            background-color: #b3e5fc;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            color: #fff;
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px rgba(67, 233, 123, 0.18);
         }
 
         #result {
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 28px;
             display: none;
+            font-size: 1.3em;
+            color: #a259f7;
+            text-shadow: 1px 1px 0 #fff, 2px 2px 0 #fff176;
         }
 
         #next-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             display: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(33, 147, 176, 0.15);
+            transition: background 0.2s, transform 0.2s;
+        }
+        #next-button:hover {
+            background: linear-gradient(90deg, #396afc 0%, #2948ff 100%);
+            color: #fff176;
+            transform: scale(1.05);
         }
 
         #restart-button{
             margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #008CBA;
-            color: white;
+            padding: 12px 28px;
+            background: linear-gradient(90deg, #ff4e50 0%, #f9d423 100%);
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             display: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 78, 80, 0.15);
+            transition: background 0.2s, transform 0.2s;
+        }
+        #restart-button:hover {
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            color: #fff176;
+            transform: scale(1.05);
         }
 
+        .globes-circle {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 480px;
+            height: 480px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        .globe-img {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background-image: url('globe.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        @media (max-width: 700px) {
+            .globes-circle {
+                width: 260px;
+                height: 260px;
+            }
+            .globe-img {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        body { position: relative; }
     </style>
 </head>
 <body>
+    <div class="globes-circle"></div>
+
+
+    
+    
     <div class="quiz-container">
+    
+    
         <h1>Ultimate Geography Quiz</h1>
         <div id="question"></div>
         <div class="options" id="options"></div>
@@ -87,7 +187,32 @@
         <button id="next-button">Next Question</button>
         <button id="restart-button">Restart Quiz</button>
     </div>
+    
+    
 <script>
+    // Add 20 globe images in a rectangle around the quiz box
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.globes-circle');
+      if (container) {
+        container.innerHTML = '';
+        const rows = 4;
+        const cols = 5;
+        const spacingX = 110; // horizontal spacing between globes
+        const spacingY = 110; // vertical spacing between globes
+        const offsetX = -((cols - 1) * spacingX) / 2;
+        const offsetY = -((rows - 1) * spacingY) / 2;
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const globe = document.createElement('div');
+            globe.className = 'globe-img';
+            globe.style.left = `calc(50% + ${offsetX + col * spacingX}px - 24px)`;
+            globe.style.top = `calc(50% + ${offsetY + row * spacingY}px - 24px)`;
+            container.appendChild(globe);
+          }
+        }
+      }
+    });
+
     const questions = [
         {
             question: "What is the Köppen-Geiger climate classification of Ushuaia, Argentina?",
@@ -299,6 +424,32 @@
             options: ["Vatican city", "Monaco", "Monte Carlo", "Heathrow Airport"],
             answer: "Heathrow Airport"
         }
+        ,
+        {
+            question: "Which river forms the largest inland delta in the world?",
+            options: ["Amazon", "Okavango", "Nile", "Mekong"],
+            answer: "Okavango"
+        },
+        {
+            question: "What is the primary cause of the Atacama Desert's extreme aridity?",
+            options: ["Rain shadow effect", "Cold ocean currents", "High altitude", "Continentality"],
+            answer: "Cold ocean currents"
+        },
+        {
+            question: "Which tectonic plate is subducting beneath the South American Plate to form the Andes?",
+            options: ["Nazca Plate", "Cocos Plate", "Pacific Plate", "Caribbean Plate"],
+            answer: "Nazca Plate"
+        },
+        {
+            question: "What is the term for a lake that has no outlet to the sea and loses water only by evaporation or seepage?",
+            options: ["Oxbow lake", "Pluvial lake", "Endorheic lake", "Tarn"],
+            answer: "Endorheic lake"
+        },
+        {
+            question: "Which country contains the world's largest expanse of karst topography?",
+            options: ["Vietnam", "Slovenia", "China", "Croatia"],
+            answer: "China"
+        }
     ];
     let currentQuestion = 0;
     let score = 0;
@@ -310,7 +461,7 @@
 
         function loadQuestion() {
             const questionData = questions[currentQuestion];
-            questionElement.textContent = questionData.question;
+            questionElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}: ${questionData.question}`;
             optionsElement.innerHTML = "";
 
             questionData.options.forEach(option => {
@@ -324,9 +475,15 @@
 
         function checkAnswer(selectedOption) {
             const questionData = questions[currentQuestion];
+            let message = '';
             if (selectedOption === questionData.answer) {
                 score++;
+                message = 'Correct!';
+            } else {
+                message = `Incorrect! The correct answer is: ${questionData.answer}`;
             }
+            resultElement.textContent = message;
+            resultElement.style.display = "block";
             showNextButton();
         }
 
@@ -339,6 +496,7 @@
             if (currentQuestion < questions.length) {
                 loadQuestion();
                 nextButton.style.display = "none";
+                resultElement.style.display = "none";
             } else {
                 showResult();
             }
