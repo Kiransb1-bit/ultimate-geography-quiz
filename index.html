@@ -181,6 +181,8 @@
 </head>
 <body>
     <div class="globes-circle"></div>
+    <img id="checkmark-left" src="311-3119411-check-mark-clip-art-free-circle-checkmark-clip-art-in-a.png" style="display:none; position:fixed; top:18px; left:18px; width:60px; height:60px; z-index:100; pointer-events:none;" alt="Checkmark">
+    <img id="checkmark-right" src="311-3119411-check-mark-clip-art-free-circle-checkmark-clip-art-in-a.png" style="display:none; position:fixed; top:18px; right:18px; width:60px; height:60px; z-index:100; pointer-events:none;" alt="Checkmark">
 
 
     
@@ -484,11 +486,17 @@
         function checkAnswer(selectedOption) {
             const questionData = questions[currentQuestion];
             let message = '';
+            const checkmarkLeft = document.getElementById('checkmark-left');
+            const checkmarkRight = document.getElementById('checkmark-right');
             if (selectedOption === questionData.answer) {
                 score++;
                 message = 'Correct!';
+                checkmarkLeft.style.display = 'block';
+                checkmarkRight.style.display = 'block';
             } else {
                 message = `Incorrect! The correct answer is: ${questionData.answer}`;
+                checkmarkLeft.style.display = 'none';
+                checkmarkRight.style.display = 'none';
             }
             resultElement.textContent = message;
             resultElement.style.display = "block";
@@ -501,6 +509,10 @@
 
         function nextQuestion() {
             currentQuestion++;
+            const checkmarkLeft = document.getElementById('checkmark-left');
+            const checkmarkRight = document.getElementById('checkmark-right');
+            checkmarkLeft.style.display = 'none';
+            checkmarkRight.style.display = 'none';
             if (currentQuestion < questions.length) {
                 loadQuestion();
                 nextButton.style.display = "none";
